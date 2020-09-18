@@ -1,12 +1,34 @@
-class Indecision extends React.Component {
+class IndecisionApp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      options: ["Thing one", "Thing two", "Thing four"],
+      subtitle: "Put your life in the hands of a computer",
+      title: "Indecision",
+    };
+  }
+  handleDeleteOption() {
+    this.setState(() => {
+      return {
+        options: [],
+      };
+    });
+  }
+
   render() {
+    // const title = "Indecision";
+    // const subtitle = "Put your life in the hands of a computer";
+    // const options = ["Thing one", "Thing two", "Thing four"];
+
     return (
       <div>
-        <Header />
-        <Action />
-        <Option />
-        <Form></Form>
-        <Options></Options>
+        <Header title={this.state.title} subtitle={this.state.subtitle} />
+        <Action hasOption={this.state.options.length > 0} />
+        <Options
+          options={this.state.options}
+          handleDeleteOption={this.handleDeleteOption}
+        />
+        <AddOption />
       </div>
     );
   }
@@ -16,42 +38,44 @@ class Header extends React.Component {
   render() {
     return (
       <div>
-        <h1>title</h1>
-        <h2>Subtitle</h2>
+        <h1>{this.props.title}</h1>
+        <h2>{this.props.subtitle}</h2>
       </div>
     );
   }
 }
 
 class Action extends React.Component {
-  handlAddOption(e) {
-    e.preventDefault();
-    const option = e.target.elements.hell.value;
-    if (option) {
-      alert(option);
-    }
+  handlePick() {
+    alert("handlePick");
   }
   render() {
     return (
       <div>
-        <h3>Action</h3>
-        <form onSubmit={this.handlAddOption}>
-          <input type="text" name="hell"></input>
-          <button>Add option</button>
-        </form>
+        <button onClick={this.handlePick} disabled={this.props.hasOption}>
+          What should I do?
+        </button>
       </div>
     );
   }
 }
 
 class Options extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleRemoveAll = this.handleRemoveAll.bind(this);
+  }
   handleRemoveAll() {
-    console.log("df");
+    console.log(this.props.options);
+    // alert('handleRemoveAll');
   }
   render() {
     return (
       <div>
-        <button onClick={this.handleRemoveAll}>REMOVE ALL</button>
+        <button onClick={this.handleRemoveAll}>Remove All</button>
+        {this.props.options.map((option) => (
+          <Option key={option} optionText={option} />
+        ))}
       </div>
     );
   }
@@ -59,32 +83,30 @@ class Options extends React.Component {
 
 class Option extends React.Component {
   render() {
-    return (
-      <div>
-        <ul>Option Component</ul>
-      </div>
-    );
+    return <div>{this.props.optionText}</div>;
   }
 }
 
-class Form extends React.Component {
-  handleAdd(e) {
+class AddOption extends React.Component {
+  handleAddOption(e) {
     e.preventDefault();
-    const focus = e.target.elements.focus.value;
-    if (focus) {
-      console.log(`Radius: ${focus / 2}`);
+
+    const option = e.target.elements.option.value.trim();
+
+    if (option) {
+      alert(option);
     }
   }
   render() {
     return (
       <div>
-        <form onSubmit={this.handleAdd}>
-          <input type="number" name="focus" placeholder="Diameter"></input>
-          <button>Calculate</button>
+        <form onSubmit={this.handleAddOption}>
+          <input type="text" name="option" />
+          <button>Add Option</button>
         </form>
       </div>
     );
   }
 }
 
-ReactDOM.render(<Indecision />, document.getElementById("root"));
+ReactDOM.render(<IndecisionApp />, document.getElementById("root"));

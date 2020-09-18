@@ -42,7 +42,7 @@ class Action extends React.Component {
   }
 }
 
-class AddOption extends React.Component {
+class Options extends React.Component {
   removeAll() {
     console.log("removed all");
   }
@@ -67,7 +67,7 @@ class Option extends React.Component {
         {this.props.options.map((prop) => (
           <li key={prop}>{prop} Option</li>
         ))}
-        <AddOption />
+        <Options />
       </div>
     );
   }
